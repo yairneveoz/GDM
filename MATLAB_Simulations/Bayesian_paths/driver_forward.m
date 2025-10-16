@@ -1,0 +1,16 @@
+% driver_forward
+
+clear
+clc
+
+% Pick some test parameters [R0, r0, pitch, cL/cT, j_amp]
+theta = [5e-13, 3.65e-15, 0.0, 1.6068, 1.0];
+
+pred = forward_stub(theta);
+
+fprintf(['m_{pred} = %.3e kg\n' ...
+         'mu_{pred}= %.3e J/T\n' ...
+         'λ_Cpred  = %.3e m\n' ...
+         'F_res    = %.3e\n' ...
+         'P_rad    = %.3e W\n'], ...
+         pred.m_pred, pred.mu_pred, pred.lamC_pred, pred.Fres, pred.Prad);

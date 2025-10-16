@@ -1,0 +1,5 @@
+% run_demo_alpha_G_coupling
+clear
+clc
+
+demo_alpha_G_coupling

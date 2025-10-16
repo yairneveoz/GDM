@@ -1,0 +1,130 @@
+% Continous_space_density
+
+clear
+clc
+
+grid_size = 100; %25; % number of points in each dimention.
+% a0 = inputs.a0; % lattice constant at rest
+rho_0 = 1;
+rho_max = 5;
+sigma_r = 8;
+r_0 = 1:1:grid_size;
+size_x = 15;
+size_y = size_x;
+N_circles = 20;
+
+rho_p = rho_0*(1 + rho_max./r_0);
+rho_n = 1./(2./rho_0 - 1./rho_p);
+
+r_p = r_0./rho_p;
+r_n = r_0./rho_n;
+
+x_p = [fliplr(r_p), 0, r_p];
+y_p = [fliplr(r_p), 0, r_p];
+
+%
+%% meshgrid
+% xx = 1:1:600;
+% yy = 1:1:600;
+%
+%%
+figure(15)
+clf
+subplot(2,2,1)
+plot(r_0,rho_0*ones(size(r_0))','.-')
+hold on
+plot(r_p,rho_p,'.-')
+plot(r_n,rho_n,'.-')
+% plot(cumsum(r_p),rho_p,'.-')
+% plot(cumsum(r_n),rho_n,'.-')
+hold off
+legend
+
+subplot(2,2,2)
+plot(r_0,1.0*ones(size(r_0)),'.-')
+hold on
+plot(r_p,1.5*ones(size(r_p)),'.-')
+plot(r_n,0.5*ones(size(r_n)),'.-')
+ylim([0 2])
+hold off
+%
+%% 2D:
+cx_1 = grid_size*0.25;
+cy_1 = grid_size*0.5;
+
+cx_2 = grid_size*0.65;
+cy_2 = grid_size*0.5;
+
+[theta_1, R0_1] = cart2pol(X0 - cx_1, Y0 - cy_1);
+[theta_2, R0_2] = cart2pol(X0 - cx_2, Y0 - cy_2);
+
+RHO2p_1 = rho_0*(1 + rho_max*exp(-0.5*(R0_1./sigma_r).^2));
+RHO2p_2 = rho_0*(1 + rho_max*exp(-0.5*(R0_2./sigma_r).^2));
+
+RHO2n_1 = 1./(2./rho_0 - 1./RHO2p_1);
+RHO2n_2 = 1./(2./rho_0 - 1./RHO2p_2);
+
+R2p_1 = R0_1./RHO2p_1;
+R2n_1 = R0_1./RHO2n_1;
+
+R2p_2 = R0_2./RHO2p_2;
+R2n_2 = R0_2./RHO2n_2;
+
+[X2p_1, Y2p_1] = pol2cart(theta_1, R2p_1);
+[X2n_2, Y2n_2] = pol2cart(theta_2, R2n_2);
+% K2p = (pi/12)*(gradient(R2p_1).^2)/R2p_1.^2;
+% K2n = (pi/12)*(gradient(R2n_1).^2)/R2n_1.^2;
+% 
+% K2p = (4*pi/45)*(gradient(R2p_1).^2)/R2p_1.^2;
+% K2n = (4*pi/45)*(gradient(R2n_1).^2)/R2n_1.^2;
+%
+%%
+
+figure(16)
+subplot(2,3,1)
+surf(RHO2p_1, 'EdgeColor','none')
+hold on
+contour3(RHO2p_1, 'k')
+hold off
+
+%%%
+subplot(2,3,2)
+surf(RHO2n_2, 'EdgeColor','none')
+
+%%%
+subplot(2,3,3)
+surf(RHO2p_1.*RHO2n_2, 'EdgeColor','none')
+hold on
+contour3(RHO2p_1.*RHO2n_2, 20, 'k')
+hold off
+
+%% %
+subplot(2,3,4)
+surf(X2p_1, Y2p_1, RHO2p_1, 'EdgeColor','none')
+% plot(X2p_1, Y2p_1, '.')
+hold on
+contour3(X2p_1, Y2p_1, RHO2p_1, 'k')
+hold off
+
+%% %
+subplot(2,3,5)
+surf(X2n_2, Y2n_2, RHO2n_2, 'EdgeColor','none')
+% plot(X2p_1, Y2p_1, '.')
+hold on
+contour3(X2n_2, Y2n_2, RHO2n_2, 'k')
+hold off
+
+%% %
+% subplot(2,3,6)
+% surf(X2n_2, Y2n_2, RHO2n_2, 'EdgeColor','none')
+% % plot(X2p_1, Y2p_1, '.')
+% hold on
+% contour3(X2n_2, Y2n_2, RHO2n_2, 'k')
+% hold off
+
+
+
+
+
+
+
